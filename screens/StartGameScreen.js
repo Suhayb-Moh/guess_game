@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { View, TextInput, Text, StyleSheet, Alert } from "react-native";
-import PrimaryButton from "../components/PrimaryButton";
+import PrimaryButton from "../components/ui/PrimaryButton";
+import Colors from "../constants/colors";
+import Title from "../components/ui/Title";
+import Card from "../components/ui/Card";
+import InstructionText from "../components/ui/InstructionText";
 
-function StartGameScreen({ onPickNumber }) {
+function StartGameScreen({ onPickNumber, gameReset }) {
   const [enteredNumber, setEnteredNumber] = useState("");
 
   const handleNumberChange = (number) => {
@@ -11,6 +15,20 @@ function StartGameScreen({ onPickNumber }) {
 
   const resetInputHandler = () => {
     setEnteredNumber("");
+  };
+
+  const backToHome = () => {
+    Alert.alert("Reset", "Are you sure you want to reset the game?", [
+      {
+        text: "Yes",
+        style: "destructive",
+        onPress: () => {
+          setEnteredNumber("");
+          gameReset(true);
+        },
+      },
+      { text: "No", style: "cancel" },
+    ]);
   };
 
   const handleConfirmButtonPress = () => {
@@ -34,9 +52,15 @@ function StartGameScreen({ onPickNumber }) {
         {
           text: "Yes",
           style: "default",
-          onPress: () => console.log("Game started"),
         },
-        { text: "No", style: "cancel" },
+        {
+          text: "No",
+          style: "destructive",
+          onPress: () => {
+            setEnteredNumber("");
+            gameReset(true);
+          },
+        },
       ]
     );
 
@@ -44,9 +68,11 @@ function StartGameScreen({ onPickNumber }) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <Text style={styles.titleText}>Start Game</Text>
+    <View style={styles.rootContainer}>
+      <Title>Game</Title>
+      <Card>
+        <InstructionText style={styles.titleText}>Start Game</InstructionText>
+        <InstructionText>Pick a number between 1 and 99</InstructionText>
         <TextInput
           style={styles.inputText}
           maxLength={2}
@@ -66,7 +92,7 @@ function StartGameScreen({ onPickNumber }) {
             </PrimaryButton>
           </View>
         </View>
-      </View>
+      </Card>
     </View>
   );
 }
@@ -74,33 +100,25 @@ function StartGameScreen({ onPickNumber }) {
 export default StartGameScreen;
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-    backgroundColor: "#72063c",
-    marginHorizontal: 24,
-    borderRadius: 8,
+  rootContainer: {
+    flex: 1,
     marginTop: 100,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.45,
-    shadowRadius: 6,
-    elevation: 2,
+    alignItems: "center",
   },
   inputText: {
     hieght: 50,
     width: 50,
     fontSize: 32,
-    borderBottomColor: "#ddb52f",
+    borderBottomColor: Colors.tertiary,
     borderBottomWidth: 2,
-    color: "#ddb52f",
+    color: Colors.tertiary,
     marginVertical: 8,
     fontWeight: "bold",
     textAlign: "center",
   },
   titleText: {
     fontSize: 24,
+    fontFamily: "Open-Sans-Bold",
     color: "white",
     marginBottom: 16,
     textAlign: "center",
