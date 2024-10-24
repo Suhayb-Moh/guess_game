@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Dimensions } from "react-native";
 import Colors from "../../constants/colors";
 
 function Card({ children }) {
@@ -6,6 +6,8 @@ function Card({ children }) {
 }
 
 export default Card;
+
+const windowWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   card: {
@@ -15,7 +17,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary800,
     marginHorizontal: 24,
     borderRadius: 8,
-    marginTop: 36,
+    marginTop: windowWidth < 380 ? 18 : 36,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.45,
